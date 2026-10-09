@@ -1,0 +1,64 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects | Web GIS Portfolio</title>
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/ol@v10.6.1/ol.css">
+
+    <link rel="stylesheet"
+          href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+</head>
+<body>
+
+    <header>
+        <h1>My Projects</h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="background.html">About Me</a>
+            <a href="projects.html">Projects</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <p class="tag">WEB GIS & SPATIAL ANALYSIS</p>
+            <h2>My GIS Projects</h2>
+            <p>
+                This page presents interactive web maps created
+                with OpenLayers and Leaflet.
+            </p>
+        </section>
+
+        <section>
+            <h2>Project 1: OpenLayers Map</h2>
+            <p>
+                Explore geographic data using OpenLayers.
+                Markers appear when the zoom level reaches 10.
+            </p>
+            <div id="ol-map" class="map"></div>
+        </section>
+
+        <section>
+            <h2>Project 2: Leaflet Map</h2>
+            <p>
+                Explore a second interactive map created with Leaflet.
+            </p>
+            <div id="leaflet-map" class="map"></div>
+        </section>
+    </main>
+
+    <footer>
+        <p>My Web GIS Portfolio | 2026</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/ol@v10.6.1/dist/ol.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="maps.js"></script>
+
+</body>
+</html>
