@@ -1,75 +1,171 @@
-
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Me | Web GIS Portfolio</title>
+
+    <title>About Me | Arife Nur Çakır</title>
+
+    <meta name="description"
+          content="Get to know Arife Nur Çakır, a Geomatics Engineering student at Hacettepe University.">
+
     <link rel="stylesheet" href="style.css">
+
+    <style>
+        .about-section {
+            max-width: 1200px;
+            margin: 48px auto;
+            padding: 48px;
+            background: #ffffff;
+            border: 1px solid #E8CFD3;
+            border-radius: 26px;
+        }
+
+        .about-layout {
+            display: grid;
+            grid-template-columns: minmax(260px, 0.85fr) 1.15fr;
+            gap: 52px;
+            align-items: center;
+        }
+
+        .about-photo {
+            width: 100%;
+            height: 480px;
+            object-fit: cover;
+            object-position: center;
+            border-radius: 20px;
+            border: 1px solid #E8CFD3;
+            background: #FAF4F1;
+        }
+
+        .about-tag {
+            color: #B77D91;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 22px;
+        }
+
+        .about-text h2 {
+            color: #793B56;
+            font-size: clamp(2.2rem, 4vw, 3.5rem);
+            line-height: 1.15;
+            margin: 0 0 20px;
+        }
+
+        .about-subtitle {
+            color: #B77D91;
+            font-size: 1.15rem;
+            margin-bottom: 26px;
+        }
+
+        .about-text p {
+            color: #35252E;
+            font-size: 1.05rem;
+            line-height: 1.9;
+        }
+
+        .about-highlight {
+            margin-top: 26px;
+            padding: 20px 22px;
+            background: #FAF4F1;
+            border-left: 4px solid #B77D91;
+            border-radius: 0 12px 12px 0;
+            color: #793B56;
+            line-height: 1.7;
+        }
+
+        @media (max-width: 800px) {
+            .about-section {
+                margin: 24px 16px;
+                padding: 24px;
+            }
+
+            .about-layout {
+                grid-template-columns: 1fr;
+                gap: 28px;
+            }
+
+            .about-photo {
+                height: 420px;
+                max-width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .about-section {
+                padding: 18px;
+            }
+
+            .about-photo {
+                height: 340px;
+            }
+        }
+    </style>
 </head>
+
 <body>
 
     <header>
-        <h1>About Me</h1>
+        <h1>ANC.</h1>
+
         <nav>
             <a href="index.html">Home</a>
-            <a href="background.html">About Me</a>
-            <a href="projects.html">Projects</a>
+            <a href="background.html" aria-current="page">About Me</a>
+            <a href="places.html">My Places</a>
         </nav>
     </header>
 
     <main>
-        <section class="hero">
-            <p class="tag">MY BACKGROUND</p>
-            <h2>About Me</h2>
-            <p>
-                I am a Geomatics Engineering student interested in
-                geographic information systems, remote sensing,
-                cartography and web mapping.
-            </p>
-        </section>
+        <section class="about-section">
+            <div class="about-layout">
 
-        <section>
-            <h2>Technical Skills</h2>
-            <p>Tools and technologies I use in my studies and projects.</p>
+                <div>
+                    <img
+                        class="about-photo"
+                        src="arife.jpeg"
+                        alt="Arife Nur Çakır"
+                    >
+                </div>
 
-            <table class="skills-table">
-                <tr>
-                    <th>Technology</th>
-                    <th>Application</th>
-                    <th>Image</th>
-                </tr>
-                <tr>
-                    <td>QGIS</td>
-                    <td>Spatial analysis and cartography</td>
-                    <td>
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/QGIS_logo_new.svg"
-                             alt="QGIS logo" width="70">
-                    </td>
-                </tr>
-                <tr>
-                    <td>Python</td>
-                    <td>Data processing and automation</td>
-                    <td>
-                        <img src="https://www.python.org/static/community_logos/python-logo.png"
-                             alt="Python logo" width="90">
-                    </td>
-                </tr>
-                <tr>
-                    <td>PostGIS</td>
-                    <td>Spatial database management</td>
-                    <td>
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/PostGIS_logo.png"
-     alt="PostGIS logo" width="90">
-                    </td>
-                </tr>
-            </table>
+                <div class="about-text">
+                    <div class="about-tag">A LITTLE ABOUT ME</div>
+
+                    <h2>Hi, I'm Arife Nur Çakır.</h2>
+
+                    <div class="about-subtitle">
+                        Welcome to my little corner of the world.
+                    </div>
+
+                    <p>
+                        I'm a Geomatics Engineering student at Hacettepe
+                        University. I enjoy discovering new places,
+                        exploring different cultures, and seeing the
+                        world from different perspectives.
+                    </p>
+
+                    <p>
+                        This website brings together the places I've
+                        visited, the places that are special to me,
+                        and the destinations I hope to explore.
+                    </p>
+
+                    <div class="about-highlight">
+                        Every place has its own character, memories,
+                        and stories to discover.
+                    </div>
+                </div>
+
+            </div>
         </section>
     </main>
 
     <footer>
-        <p>My Web GIS Portfolio | 2026</p>
+        <p>© 2026 Arife Nur Çakır</p>
     </footer>
 
 </body>
 </html>
+```
