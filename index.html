@@ -4,62 +4,80 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Web GIS Portfolio</title>
+    <meta name="description" content="A personal map of the places I love, the places I've visited, and the places I dream of visiting.">
+    <title>My Little Atlas | Personal Web GIS</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <header>
-        <h1>My Web GIS Portfolio</h1>
+<header>
+    <h1>My Little Atlas.</h1>
+    <nav>
+        <a href="index.html" class="active">Home</a>
+        <a href="background.html">About Me</a>
+        <a href="projects.html">My Maps</a>
+    </nav>
+</header>
 
-        <nav>
-            <a href="index.html">Home</a>
-            <a href="background.html">About Me</a>
-            <a href="projects.html">Projects</a>
-        </nav>
-    </header>
+<main>
+    <section class="hero">
+        <p class="tag">A PERSONAL MAP OF MY WORLD</p>
+        <h2 style="font-size: clamp(2.8rem, 7vw, 5.5rem); margin: 14px 0;">
+            Places, people &amp; little moments.
+        </h2>
+        <p style="max-width: 680px; font-size: 1.15rem;">
+            Some places become home, some become memories,
+            and some are still waiting to be discovered.
+            This is my little atlas of the places I love,
+            the cities I've visited, and the journeys I dream about.
+        </p>
+        <a href="projects.html" class="button">Explore my maps ↗</a>
+    </section>
 
-    <main>
-        <section class="hero">
-            <p class="tag">GEOMATICS ENGINEERING</p>
+    <section>
+        <p class="tag">TWO MAPS, ONE LITTLE WORLD</p>
+        <h2>Where would you like to go?</h2>
+        <div class="cards">
+            <article class="card">
+                <p class="tag">01 / THE WORLD</p>
+                <h3>Places I've Been &amp; Places I Dream Of</h3>
+                <p>
+                    From the streets of the Netherlands to the
+                    cities still on my wishlist, every destination
+                    has a story.
+                </p>
+                <a href="projects.html" class="button">Discover the world</a>
+            </article>
 
-            <h2>Hello, welcome to my website!</h2>
+            <article class="card">
+                <p class="tag">02 / TURKIYE</p>
+                <h3>My Everyday Places</h3>
+                <p>
+                    My favourite food spots, familiar streets,
+                    places to unwind, and little corners of life
+                    that mean something to me.
+                </p>
+                <a href="projects.html#turkiye-map" class="button">Explore my places</a>
+            </article>
+        </div>
+    </section>
 
-            <p>
-                I am a Geomatics Engineering student interested in
-                GIS, remote sensing, cartography and web mapping.
-            </p>
+    <section>
+        <p class="tag">A LITTLE ABOUT ME</p>
+        <h2>More than just places on a map.</h2>
+        <p style="max-width: 720px;">
+            I'm a Geomatics Engineering student at Hacettepe University.
+            I love discovering new places, finding favourite cafés,
+            spending time by the sea, and collecting memories along the way.
+            This website brings those places together on a map.
+        </p>
+        <a href="background.html" class="button">Get to know me</a>
+    </section>
+</main>
 
-            <a class="button" href="projects.html">
-                Explore My Projects
-            </a>
-        </section>
-
-        <section>
-            <h2>What I Do</h2>
-
-            <div class="cards">
-                <article class="card">
-                    <h3>GIS</h3>
-                    <p>Spatial analysis and geographic information systems.</p>
-                </article>
-
-                <article class="card">
-                    <h3>Remote Sensing</h3>
-                    <p>Satellite imagery and environmental analysis.</p>
-                </article>
-
-                <article class="card">
-                    <h3>Web Mapping</h3>
-                    <p>Interactive maps using web technologies.</p>
-                </article>
-            </div>
-        </section>
-    </main>
-
-    <footer>
-        <p>My Web GIS Portfolio | 2026</p>
-    </footer>
+<footer>
+    <p>My Little Atlas · A personal Web GIS journal</p>
+</footer>
 
 </body>
 </html>
