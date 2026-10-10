@@ -1,15 +1,14 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My World | Arife Nur Çakır</title>
-    <link rel="stylesheet" href="style.css">
 
-    <link
-        rel="stylesheet"
-        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-    >
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet"
+          href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 
     <style>
         .world-map-section {
@@ -32,6 +31,7 @@
             border: 1px solid #E8CFD3;
             border-radius: 16px;
             overflow: hidden;
+            background: #FAF4F1;
         }
 
         .legend {
@@ -61,22 +61,27 @@
             flex-shrink: 0;
         }
 
-        .visited-dot {
-            background: #793B56;
-        }
-
-        .wishlist-dot {
-            background: #B77D91;
-        }
-
-        .special-dot {
-            background: #A7A66A;
-        }
+        .visited-dot { background: #793B56; }
+        .wishlist-dot { background: #B77D91; }
+        .special-dot { background: #A7A66A; }
 
         .map-note {
             color: #806B76;
             font-size: 0.9rem;
             margin-top: 14px;
+        }
+
+        .world-popup strong {
+            color: #793B56;
+            font-size: 16px;
+        }
+
+        .world-popup .popup-category {
+            display: inline-block;
+            margin: 5px 0;
+            color: #B77D91;
+            font-size: 12px;
+            font-weight: 600;
         }
 
         @media (max-width: 700px) {
@@ -103,62 +108,221 @@
 
 <body>
 
-    <header>
-        <h1>ANC.</h1>
+<header>
+    <h1>ANC.</h1>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="background.html">About Me</a>
+        <a href="places.html">My Places</a>
+    </nav>
+</header>
 
-        <nav>
-            <a href="index.html">Home</a>
-            <a href="background.html">About Me</a>
-            <a href="places.html">My Places</a>
-        </nav>
-    </header>
+<main>
+    <section class="world-map-section">
+        <p class="tag">A PERSONAL MAP OF MY WORLD</p>
 
-    <main>
-        <section class="world-map-section">
-            <p class="tag">A PERSONAL MAP OF MY WORLD</p>
+        <h2>My World Map</h2>
 
-            <h2>My World Map</h2>
+        <p>
+            Explore the places I've visited and the destinations
+            still on my wishlist. Select a marker to discover its story.
+        </p>
 
-            <p>
-                Explore the places I've visited and the destinations
-                still on my wishlist. Select a marker to discover its story.
-            </p>
+        <div id="world-map"></div>
 
-            <div id="world-map"></div>
+        <div class="legend">
+            <span class="legend-item">
+                <span class="legend-dot visited-dot"></span>
+                Places I've visited
+            </span>
 
-            <!-- Categories displayed below the map -->
-            <div class="legend">
-                <span class="legend-item">
-                    <span class="legend-dot visited-dot"></span>
-                    Home &amp; everyday life
-                </span>
+            <span class="legend-item">
+                <span class="legend-dot wishlist-dot"></span>
+                Places I dream of visiting
+            </span>
 
-                <span class="legend-item">
-                    <span class="legend-dot wishlist-dot"></span>
-                    Food &amp; favourite spots
-                </span>
+            <span class="legend-item">
+                <span class="legend-dot special-dot"></span>
+                A city close to my heart
+            </span>
+        </div>
 
-                <span class="legend-item">
-                    <span class="legend-dot special-dot"></span>
-                    Nature &amp; seaside
-                </span>
-            </div>
+        <p class="map-note">
+            Zoom out to explore the world, or zoom in and select a marker
+            to read the story behind each place.
+        </p>
+    </section>
+</main>
 
-            <p class="map-note">
-                Zoom out to explore the wider world, or zoom in to see
-                the places more closely.
-            </p>
-        </section>
-    </main>
+<footer>
+    <p>© 2026 Arife Nur Çakır</p>
+</footer>
 
-    <footer>
-        <p>© 2026 Arife Nur Çakır</p>
-    </footer>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const mapElement = document.getElementById("world-map");
 
-    <!-- Keep your existing world-map JavaScript here.
-         It must initialize the map and add your location markers. -->
+    if (!mapElement || typeof L === "undefined") {
+        mapElement.innerHTML =
+            "The map could not be loaded. Please refresh the page.";
+        return;
+    }
+
+    const map = L.map("world-map", {
+        minZoom: 2,
+        maxZoom: 18,
+        worldCopyJump: false,
+        maxBounds: [[-85, -180], [85, 180]],
+        maxBoundsViscosity: 1
+    }).setView([35, 20], 2);
+
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: '&copy; OpenStreetMap contributors',
+        noWrap: true,
+        bounds: [[-85, -180], [85, 180]],
+        maxZoom: 19
+    }).addTo(map);
+
+    const places = [
+        // Places I've visited
+        {
+            name: "Amsterdam",
+            coords: [52.3676, 4.9041],
+            category: "visited",
+            story: "One of the Dutch cities I've explored."
+        },
+        {
+            name: "Rotterdam",
+            coords: [51.9244, 4.4777],
+            category: "visited",
+            story: "A city I visited in the Netherlands, known for its modern architecture."
+        },
+        {
+            name: "Leiden",
+            coords: [52.1601, 4.4970],
+            category: "visited",
+            story: "One of the Dutch cities I've had the chance to discover."
+        },
+        {
+            name: "Den Haag",
+            coords: [52.0705, 4.3007],
+            category: "special",
+            story: "My home in the Netherlands, where my boyfriend lives."
+        },
+        {
+            name: "Utrecht",
+            coords: [52.0907, 5.1214],
+            category: "visited",
+            story: "A Dutch city I've visited and enjoyed exploring."
+        },
+        {
+            name: "Milan",
+            coords: [45.4642, 9.1900],
+            category: "visited",
+            story: "One of the Italian cities I've visited."
+        },
+        {
+            name: "Florence",
+            coords: [43.7696, 11.2558],
+            category: "visited",
+            story: "A memorable Italian city with beautiful art and architecture."
+        },
+        {
+            name: "Ghent",
+            coords: [51.0543, 3.7174],
+            category: "visited",
+            story: "A Belgian city I've explored."
+        },
+        {
+            name: "Bruges",
+            coords: [51.2093, 3.2247],
+            category: "visited",
+            story: "A Belgian city with charming historic streets."
+        },
+
+        // Places on my wishlist
+        {
+            name: "Tokyo",
+            coords: [35.6762, 139.6503],
+            category: "wishlist",
+            story: "A city I dream of discovering, from its culture to its lively streets."
+        },
+        {
+            name: "Barcelona",
+            coords: [41.3874, 2.1686],
+            category: "wishlist",
+            story: "I would love to explore Barcelona's architecture and atmosphere."
+        },
+        {
+            name: "Madrid",
+            coords: [40.4168, -3.7038],
+            category: "wishlist",
+            story: "One of the Spanish cities on my travel wishlist."
+        },
+        {
+            name: "Thailand",
+            coords: [13.7563, 100.5018],
+            category: "wishlist",
+            story: "A destination I dream of visiting for its landscapes and culture."
+        },
+        {
+            name: "Rome",
+            coords: [41.9028, 12.4964],
+            category: "wishlist",
+            story: "I'd love to explore its history, streets and architecture."
+        },
+        {
+            name: "Paris",
+            coords: [48.8566, 2.3522],
+            category: "wishlist",
+            story: "A city I'd love to experience through its streets, museums and cafés."
+        },
+        {
+            name: "Berlin",
+            coords: [52.5200, 13.4050],
+            category: "wishlist",
+            story: "A city on my list to discover in the future."
+        }
+    ];
+
+    const colors = {
+        visited: "#793B56",
+        wishlist: "#B77D91",
+        special: "#A7A66A"
+    };
+
+    places.forEach(function (place) {
+        const categoryLabel = {
+            visited: "Places I've visited",
+            wishlist: "Places I dream of visiting",
+            special: "A city close to my heart"
+        }[place.category];
+
+        L.circleMarker(place.coords, {
+            radius: 7,
+            color: "#ffffff",
+            weight: 2,
+            fillColor: colors[place.category],
+            fillOpacity: 1
+        })
+        .addTo(map)
+        .bindPopup(
+            '<div class="world-popup">' +
+                '<strong>' + place.name + '</strong><br>' +
+                '<span class="popup-category">' + categoryLabel + '</span><br>' +
+                '<span>' + place.story + '</span>' +
+            '</div>'
+        );
+    });
+
+    // Keep the map correctly sized after the page is rendered.
+    setTimeout(function () {
+        map.invalidateSize();
+    }, 300);
+});
+</script>
 
 </body>
 </html>
