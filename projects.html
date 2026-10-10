@@ -4,61 +4,125 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Projects | Web GIS Portfolio</title>
+    <meta name="description" content="Explore Arife Nur Çakır's personal travel map and favourite places in Türkiye.">
+    <title>My Maps | Arife Nur Çakır</title>
     <link rel="stylesheet" href="style.css">
 
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/ol@v10.6.1/ol.css">
+    <style>
+        .maps-intro {
+            padding: 55px 0 30px;
+        }
 
-    <link rel="stylesheet"
-          href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+        .map-options {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 24px;
+            margin: 30px 0 60px;
+        }
+
+        .map-option {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            background: var(--card, #FFFFFF);
+            border: 1px solid var(--border, #E8CFD3);
+            border-radius: 20px;
+            padding: 32px;
+            min-height: 300px;
+        }
+
+        .map-option .tag {
+            margin-top: 0;
+        }
+
+        .map-option h3 {
+            font-size: 1.65rem;
+            margin-bottom: 12px;
+        }
+
+        .map-option p {
+            line-height: 1.8;
+        }
+
+        .map-symbol {
+            font-size: 2.5rem;
+            margin-bottom: 18px;
+        }
+
+        .map-option .button {
+            margin-top: auto;
+        }
+
+        @media (max-width: 700px) {
+            .map-options {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
+
 <body>
 
-    <header>
-        <h1>My Projects</h1>
-        <nav>
-            <a href="index.html">Home</a>
-            <a href="background.html">About Me</a>
-            <a href="projects.html">Projects</a>
-        </nav>
-    </header>
+<header>
+    <h1>ANC.</h1>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="background.html">About Me</a>
+        <a href="projects.html" class="active">My Maps</a>
+    </nav>
+</header>
 
-    <main>
-        <section class="hero">
-            <p class="tag">WEB GIS & SPATIAL ANALYSIS</p>
-            <h2>My GIS Projects</h2>
-            <p>
-                This page presents interactive web maps created
-                with OpenLayers and Leaflet.
-            </p>
-        </section>
+<main>
 
-        <section>
-            <h2>Project 1: OpenLayers Map</h2>
-            <p>
-                Explore geographic data using OpenLayers.
-                Markers appear when the zoom level reaches 10.
-            </p>
-            <div id="ol-map" class="map"></div>
-        </section>
+    <section class="hero maps-intro">
+        <p class="tag">A PERSONAL MAP OF MY WORLD</p>
+        <h2>Every place has a story.</h2>
+        <p>
+            Some places hold my memories, some are part of my everyday life,
+            and others are still waiting on my wishlist.
+            Explore the maps that bring my world together.
+        </p>
+    </section>
 
-        <section>
-            <h2>Project 2: Leaflet Map</h2>
-            <p>
-                Explore a second interactive map created with Leaflet.
-            </p>
-            <div id="leaflet-map" class="map"></div>
-        </section>
-    </main>
+    <section>
+        <div class="map-options">
 
-    <footer>
-        <p>My Web GIS Portfolio | 2026</p>
-    </footer>
+            <article class="map-option">
+                <div class="map-symbol" aria-hidden="true">◎</div>
+                <p class="tag">01 / TRAVEL</p>
+                <h3>My Travels &amp; Wishlist</h3>
+                <p>
+                    From the cities I've visited in Europe to the places
+                    I dream of discovering, explore the world through
+                    my travel memories and future plans.
+                </p>
+                <a href="world.html" class="button">
+                    Explore the World ↗
+                </a>
+            </article>
 
-    <script src="https://cdn.jsdelivr.net/npm/ol@v10.6.1/dist/ol.js"></script>
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="maps.js"></script>
+            <article class="map-option">
+                <div class="map-symbol" aria-hidden="true">⌖</div>
+                <p class="tag">02 / EVERYDAY LIFE</p>
+                <h3>My Favourite Places</h3>
+                <p>
+                    Discover the neighbourhoods, cafés, food spots,
+                    beaches and special places connected to my life
+                    in Ankara, Muğla and beyond.
+                </p>
+                <a href="places.html" class="button">
+                    Explore My Places ↗
+                </a>
+            </article>
+
+        </div>
+    </section>
+
+</main>
+
+<footer>
+    <p>Arife Nur Çakır · My Little Atlas</p>
+</footer>
 
 </body>
 </html>
