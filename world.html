@@ -1,0 +1,352 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Arife Nur Çakır's travel map of visited places and dream destinations.">
+    <title>My Travels & Wishlist | Arife Nur Çakır</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    
+    <style>
+        .travel-intro {
+            padding: 55px 0 30px;
+        }
+
+        .map-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 22px;
+            margin: 20px 0;
+            color: var(--muted);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+        }
+
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        #world-map {
+            width: 100%;
+            height: 570px;
+            border-radius: 18px;
+            border: 1px solid var(--border, #E8CFD3);
+            z-index: 1;
+        }
+
+        .map-note {
+            color: var(--muted);
+            font-size: 0.95rem;
+            margin-top: 16px;
+        }
+
+        .travel-groups {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 22px;
+            margin-top: 35px;
+        }
+
+        .travel-group {
+            background: var(--card, #FFFFFF);
+            border: 1px solid var(--border, #E8CFD3);
+            border-radius: 18px;
+            padding: 25px;
+        }
+
+        .travel-group h3 {
+            margin-top: 0;
+        }
+
+        .place-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 9px;
+            margin-top: 18px;
+        }
+
+        .place-chip {
+            border: 1px solid var(--border, #E8CFD3);
+            background: var(--background, #FAF4F1);
+            color: var(--text, #35252E);
+            border-radius: 30px;
+            padding: 8px 13px;
+            font-size: 0.92rem;
+        }
+
+        .visited-chip {
+            border-color: #793B56;
+        }
+
+        .wishlist-chip {
+            border-color: #B77D91;
+        }
+
+        @media (max-width: 700px) {
+            #world-map {
+                height: 420px;
+            }
+
+            .travel-groups {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>ANC.</h1>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="background.html">About Me</a>
+        <a href="projects.html">My Maps</a>
+    </nav>
+</header>
+
+<main>
+
+    <section class="hero travel-intro">
+        <p class="tag">MY TRAVELS & WISHLIST</p>
+
+        <h2>Places I've Been & Places I Dream Of.</h2>
+
+        <p>
+            Some cities hold memories, while others are still dreams.
+            This map brings together the places I've explored and
+            the destinations I hope to discover one day.
+        </p>
+    </section>
+
+    <section>
+        <h2>A Map of My World</h2>
+
+        <p>
+            Select a marker to discover a place. Use the map controls
+            to zoom in and explore the cities.
+        </p>
+
+        <div class="map-legend">
+            <div class="legend-item">
+                <span class="legend-dot" style="background:#793B56;"></span>
+                Places I've visited
+            </div>
+
+            <div class="legend-item">
+                <span class="legend-dot" style="background:#B77D91;"></span>
+                Places on my wishlist
+            </div>
+        </div>
+
+        <div id="world-map"></div>
+
+        <p class="map-note">
+            Map data © OpenStreetMap contributors.
+        </p>
+    </section>
+
+    <section class="travel-groups">
+
+        <article class="travel-group">
+            <p class="tag">01 / MEMORIES</p>
+            <h3>Places I've Visited</h3>
+            <p>
+                Cities I've explored and places that have become
+                part of my travel memories.
+            </p>
+
+            <div class="place-list">
+                <span class="place-chip visited-chip">Amsterdam</span>
+                <span class="place-chip visited-chip">Rotterdam</span>
+                <span class="place-chip visited-chip">Leiden</span>
+                <span class="place-chip visited-chip">Den Haag</span>
+                <span class="place-chip visited-chip">Utrecht</span>
+                <span class="place-chip visited-chip">Milano</span>
+                <span class="place-chip visited-chip">Florence</span>
+                <span class="place-chip visited-chip">Ghent</span>
+                <span class="place-chip visited-chip">Bruges</span>
+            </div>
+        </article>
+
+        <article class="travel-group">
+            <p class="tag">02 / SOMEDAY</p>
+            <h3>Places I Dream Of</h3>
+            <p>
+                A growing wishlist of cities and countries
+                I hope to experience in the future.
+            </p>
+
+            <div class="place-list">
+                <span class="place-chip wishlist-chip">Tokyo</span>
+                <span class="place-chip wishlist-chip">Barcelona</span>
+                <span class="place-chip wishlist-chip">Madrid</span>
+                <span class="place-chip wishlist-chip">Thailand</span>
+                <span class="place-chip wishlist-chip">Rome</span>
+                <span class="place-chip wishlist-chip">Paris</span>
+                <span class="place-chip wishlist-chip">Berlin</span>
+            </div>
+        </article>
+
+    </section>
+
+    <section>
+        <a href="places.html" class="button">
+            Discover My Favourite Places ↗
+        </a>
+    </section>
+
+</main>
+
+<footer>
+    <p>Arife Nur Çakır · My Little Atlas</p>
+</footer>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+    const worldMap = L.map("world-map", {
+        worldCopyJump: false,
+        minZoom: 2,
+        maxZoom: 12,
+        maxBounds: [[-85, -180], [85, 180]],
+        maxBoundsViscosity: 1
+    }).setView([35, 15], 2.5);
+
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: "&copy; OpenStreetMap contributors",
+        noWrap: true,
+        bounds: [[-85, -180], [85, 180]]
+    }).addTo(worldMap);
+
+    const visitedPlaces = [
+        {
+            name: "Amsterdam",
+            coords: [52.3676, 4.9041],
+            note: "A city of canals, cycling and memorable streets."
+        },
+        {
+            name: "Rotterdam",
+            coords: [51.9244, 4.4777],
+            note: "Modern architecture and urban life."
+        },
+        {
+            name: "Leiden",
+            coords: [52.1601, 4.4970],
+            note: "A charming Dutch university city."
+        },
+        {
+            name: "Den Haag",
+            coords: [52.0705, 4.3007],
+            note: "A city that has become part of my everyday life."
+        },
+        {
+            name: "Utrecht",
+            coords: [52.0907, 5.1214],
+            note: "Canals and beautiful historic streets."
+        },
+        {
+            name: "Milano",
+            coords: [45.4642, 9.1900],
+            note: "Italian city life, architecture and style."
+        },
+        {
+            name: "Florence",
+            coords: [43.7696, 11.2558],
+            note: "Art, architecture and Renaissance history."
+        },
+        {
+            name: "Ghent",
+            coords: [51.0543, 3.7174],
+            note: "Historic streets and riverside views."
+        },
+        {
+            name: "Bruges",
+            coords: [51.2093, 3.2247],
+            note: "Fairytale-like canals and old town streets."
+        }
+    ];
+
+    const wishlistPlaces = [
+        {
+            name: "Tokyo",
+            coords: [35.6762, 139.6503],
+            note: "A dream destination full of contrasts and discovery."
+        },
+        {
+            name: "Barcelona",
+            coords: [41.3874, 2.1686],
+            note: "Architecture, art and Mediterranean streets."
+        },
+        {
+            name: "Madrid",
+            coords: [40.4168, -3.7038],
+            note: "Spanish culture, food and lively city squares."
+        },
+        {
+            name: "Thailand",
+            coords: [13.7563, 100.5018],
+            note: "A country I'd love to explore. Marker shown in Bangkok."
+        },
+        {
+            name: "Rome",
+            coords: [41.9028, 12.4964],
+            note: "Ancient history and remarkable architecture."
+        },
+        {
+            name: "Paris",
+            coords: [48.8566, 2.3522],
+            note: "Art, cafés and long walks through the city."
+        },
+        {
+            name: "Berlin",
+            coords: [52.5200, 13.4050],
+            note: "History, culture and contemporary city life."
+        }
+    ];
+
+    function addPlaceMarkers(places, color, category) {
+        places.forEach(function(place) {
+            const marker = L.circleMarker(place.coords, {
+                radius: 8,
+                color: "#FFFFFF",
+                weight: 2,
+                fillColor: color,
+                fillOpacity: 1
+            }).addTo(worldMap);
+
+            marker.bindPopup(
+                "<div style='min-width:160px'>" +
+                "<strong style='color:#793B56;font-size:16px'>" +
+                place.name +
+                "</strong><br>" +
+                "<span style='color:#806C74;font-size:12px'>" +
+                category +
+                "</span><br><br>" +
+                place.note +
+                "</div>"
+            );
+
+            marker.bindTooltip(place.name, {
+                direction: "top",
+                offset: [0, -8]
+            });
+        });
+    }
+
+    addPlaceMarkers(visitedPlaces, "#793B56", "Places I've visited");
+    addPlaceMarkers(wishlistPlaces, "#B77D91", "On my wishlist");
+</script>
+
+</body>
+</html>
