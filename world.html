@@ -1,98 +1,44 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My World | Arife Nur Çakır</title>
-
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet"
-          href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    >
 
     <style>
-        :root {
-            --rose-bg: #FAF4F1;
-            --rose-light: #E8CFD3;
-            --rose: #B77D91;
-            --wine: #793B56;
-            --dark: #35252E;
-            --olive: #A7A66A;
-            --white: #FFFFFF;
-        }
-
-        body {
-            background: var(--rose-bg);
-            color: var(--dark);
-        }
-
-        /* Same layout as My Places */
-
-        .world-page {
-            width: min(1180px, 92%);
-            margin: 50px auto;
-        }
-
-        .intro-card {
-            padding: 38px;
-            background: var(--white);
-            border: 1px solid var(--rose-light);
+        .world-map-section {
+            background: #ffffff;
+            border: 1px solid #E8CFD3;
             border-radius: 24px;
-            margin-bottom: 30px;
+            padding: 32px;
+            margin: 32px auto;
+            max-width: 1400px;
         }
 
-        .eyebrow {
-            color: var(--rose);
-            font-size: 0.8rem;
-            font-weight: 700;
-            letter-spacing: 0.22em;
-            text-transform: uppercase;
-        }
-
-        .intro-card h1,
-        .map-section h2 {
-            color: var(--wine);
-        }
-
-        .intro-card h1 {
-            font-size: clamp(2rem, 5vw, 3.5rem);
-            margin: 18px 0;
-            line-height: 1.15;
-        }
-
-        .intro-card p,
-        .map-section > p {
-            line-height: 1.8;
-        }
-
-        .map-section {
-            padding: 26px;
-            margin: 28px 0;
-            background: var(--white);
-            border: 1px solid var(--rose-light);
-            border-radius: 22px;
-        }
-
-        .map-section h2 {
+        .world-map-section h2 {
+            color: #793B56;
             margin-top: 0;
         }
 
         #world-map {
-            height: 610px;
             width: 100%;
-            border: 1px solid var(--rose-light);
+            height: 610px;
+            border: 1px solid #E8CFD3;
             border-radius: 16px;
             overflow: hidden;
-            background: #E8CFD3;
         }
-
-        /* Matching category labels */
 
         .legend {
             display: flex;
             flex-wrap: wrap;
             gap: 12px;
-            margin: 18px 0;
+            margin: 22px 0 16px;
         }
 
         .legend-item {
@@ -101,356 +47,118 @@
             gap: 9px;
             padding: 10px 15px;
             border-radius: 999px;
-            background: var(--rose-bg);
-            border: 1px solid var(--rose-light);
-            color: var(--dark);
-            font-size: 0.9rem;
+            background: #FAF4F1;
+            border: 1px solid #E8CFD3;
+            color: #35252E;
+            font-size: 0.95rem;
         }
 
         .legend-dot {
+            display: inline-block;
             width: 12px;
             height: 12px;
             border-radius: 50%;
             flex-shrink: 0;
         }
 
-        .map-marker {
-            width: 17px;
-            height: 17px;
-            border: 3px solid white;
-            border-radius: 50%;
-            box-shadow: 0 2px 9px #35252e55;
+        .visited-dot {
+            background: #793B56;
         }
 
-        /* Popup design */
-
-        .leaflet-popup-content-wrapper {
-            border-radius: 15px;
-            box-shadow: 0 6px 24px #35252e25;
+        .wishlist-dot {
+            background: #B77D91;
         }
 
-        .leaflet-popup-content {
-            margin: 16px 18px;
-            min-width: 190px;
-            line-height: 1.5;
-        }
-
-        .popup-title {
-            color: var(--wine);
-            font-size: 1.05rem;
-            font-weight: 700;
-            margin-bottom: 7px;
-        }
-
-        .popup-category {
-            color: var(--rose);
-            font-size: 0.78rem;
-            font-weight: 700;
-            letter-spacing: 0.04em;
-            margin-bottom: 7px;
-        }
-
-        .popup-note {
-            color: var(--dark);
-            font-size: 0.92rem;
+        .special-dot {
+            background: #A7A66A;
         }
 
         .map-note {
             color: #806B76;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             margin-top: 14px;
         }
 
-        /* Map controls */
-
-        .leaflet-bar a {
-            color: var(--wine) !important;
-        }
-
-        .leaflet-bar a:hover {
-            background: var(--rose-bg) !important;
-        }
-
-        .leaflet-control-attribution {
-            border-radius: 5px 0 0 0;
-        }
-
-        @media (max-width: 650px) {
-            .world-page {
-                width: 94%;
-                margin: 24px auto;
-            }
-
-            .intro-card,
-            .map-section {
+        @media (max-width: 700px) {
+            .world-map-section {
                 padding: 18px;
-            }
-
-            .intro-card h1 {
-                font-size: 2.1rem;
+                border-radius: 18px;
             }
 
             #world-map {
-                height: 480px;
+                height: 450px;
+            }
+
+            .legend {
+                gap: 8px;
             }
 
             .legend-item {
-                font-size: 0.82rem;
-                padding: 8px 11px;
+                font-size: 0.85rem;
+                padding: 9px 12px;
             }
         }
     </style>
 </head>
 
 <body>
+
     <header>
         <h1>ANC.</h1>
+
         <nav>
             <a href="index.html">Home</a>
             <a href="background.html">About Me</a>
-            <a href="world.html">My World</a>
             <a href="places.html">My Places</a>
         </nav>
     </header>
 
-    <main class="world-page">
+    <main>
+        <section class="world-map-section">
+            <p class="tag">A PERSONAL MAP OF MY WORLD</p>
 
-        <section class="intro-card">
-            <p class="eyebrow">A WORLD OF MEMORIES & DREAMS</p>
-
-            <h1>Places I've been, places I dream of.</h1>
-
-            <p>
-                Welcome to my little world. I'm Arife Nur Çakır,
-                a Geomatics Engineering student at Hacettepe University.
-                This map brings together the cities I've visited,
-                the destinations I dream of exploring, and the places
-                that mean something special to me.
-            </p>
-        </section>
-
-        <section class="map-section">
             <h2>My World Map</h2>
 
             <p>
-                From memorable city breaks to places still on my wishlist,
-                every marker has a story. Select one to discover more.
+                Explore the places I've visited and the destinations
+                still on my wishlist. Select a marker to discover its story.
             </p>
-
-            <div class="legend">
-                <span class="legend-item">
-                    <span class="legend-dot"
-                          style="background:#793B56"></span>
-                    Places I've visited
-                </span>
-
-                <span class="legend-item">
-                    <span class="legend-dot"
-                          style="background:#B77D91"></span>
-                    My travel wishlist
-                </span>
-
-                <span class="legend-item">
-                    <span class="legend-dot"
-                          style="background:#A7A66A"></span>
-                    Places close to my heart
-                </span>
-            </div>
 
             <div id="world-map"></div>
 
+            <!-- Categories displayed below the map -->
+            <div class="legend">
+                <span class="legend-item">
+                    <span class="legend-dot visited-dot"></span>
+                    Home &amp; everyday life
+                </span>
+
+                <span class="legend-item">
+                    <span class="legend-dot wishlist-dot"></span>
+                    Food &amp; favourite spots
+                </span>
+
+                <span class="legend-item">
+                    <span class="legend-dot special-dot"></span>
+                    Nature &amp; seaside
+                </span>
+            </div>
+
             <p class="map-note">
-                Zoom out to see the world, zoom in to explore each city,
-                and select a marker to read its story.
+                Zoom out to explore the wider world, or zoom in to see
+                the places more closely.
             </p>
         </section>
-
     </main>
 
     <footer>
-        <p>Made with love by Arife Nur Çakır</p>
+        <p>© 2026 Arife Nur Çakır</p>
     </footer>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-    <script>
-        const worldPlaces = [
-            // Places I've visited
+    <!-- Keep your existing world-map JavaScript here.
+         It must initialize the map and add your location markers. -->
 
-            {
-                name: "Amsterdam",
-                coords: [52.3676, 4.9041],
-                status: "visited",
-                category: "Places I've visited",
-                note: "One of the Dutch cities I've explored, with beautiful canals, distinctive architecture and lively streets."
-            },
-            {
-                name: "Rotterdam",
-                coords: [51.9244, 4.4777],
-                status: "visited",
-                category: "Places I've visited",
-                note: "A city I remember for its modern architecture, striking buildings and lively waterfront."
-            },
-            {
-                name: "Leiden",
-                coords: [52.1601, 4.4970],
-                status: "visited",
-                category: "Places I've visited",
-                note: "A charming Dutch city with peaceful canals and a beautiful historic centre."
-            },
-            {
-                name: "Den Haag",
-                coords: [52.0705, 4.3007],
-                status: "special",
-                category: "A place close to my heart",
-                note: "My boyfriend lives here. Den Haag feels special to me because someone I love calls this city home."
-            },
-            {
-                name: "Utrecht",
-                coords: [52.0907, 5.1214],
-                status: "visited",
-                category: "Places I've visited",
-                note: "A lovely Dutch city with canals, historic streets and a relaxed atmosphere."
-            },
-            {
-                name: "Milan",
-                coords: [45.4642, 9.1900],
-                status: "visited",
-                category: "Places I've visited",
-                note: "A city I visited in Italy, known for its architecture, fashion and energetic streets."
-            },
-            {
-                name: "Florence",
-                coords: [43.7696, 11.2558],
-                status: "visited",
-                category: "Places I've visited",
-                note: "A memorable Italian city filled with art, history and beautiful architecture."
-            },
-            {
-                name: "Ghent",
-                coords: [51.0543, 3.7174],
-                status: "visited",
-                category: "Places I've visited",
-                note: "A Belgian city with historic streets, canals and a character all of its own."
-            },
-            {
-                name: "Bruges",
-                coords: [51.2093, 3.2247],
-                status: "visited",
-                category: "Places I've visited",
-                note: "A beautiful Belgian city with picturesque streets and romantic canals."
-            },
-
-            // Places I dream of visiting
-
-            {
-                name: "Tokyo",
-                coords: [35.6762, 139.6503],
-                status: "wishlist",
-                category: "On my travel wishlist",
-                note: "I dream of experiencing its mix of tradition, incredible food and modern city life."
-            },
-            {
-                name: "Barcelona",
-                coords: [41.3874, 2.1686],
-                status: "wishlist",
-                category: "On my travel wishlist",
-                note: "I'd love to discover its architecture, colourful streets, beaches and Mediterranean atmosphere."
-            },
-            {
-                name: "Madrid",
-                coords: [40.4168, -3.7038],
-                status: "wishlist",
-                category: "On my travel wishlist",
-                note: "A city I'd love to explore for its museums, lively squares and food culture."
-            },
-            {
-                name: "Thailand",
-                coords: [13.7563, 100.5018],
-                status: "wishlist",
-                category: "On my travel wishlist",
-                note: "A dream trip for tropical beaches, local food, colourful markets and new experiences."
-            },
-            {
-                name: "Rome",
-                coords: [41.9028, 12.4964],
-                status: "wishlist",
-                category: "On my travel wishlist",
-                note: "I dream of walking through its historic streets and experiencing its remarkable architecture."
-            },
-            {
-                name: "Paris",
-                coords: [48.8566, 2.3522],
-                status: "wishlist",
-                category: "On my travel wishlist",
-                note: "A city I hope to experience through its art, cafés, streets and iconic landmarks."
-            },
-            {
-                name: "Berlin",
-                coords: [52.5200, 13.4050],
-                status: "wishlist",
-                category: "On my travel wishlist",
-                note: "I'd love to discover its creative neighbourhoods, museums and distinctive history."
-            }
-        ];
-
-        const map = L.map("world-map", {
-            minZoom: 2,
-            maxZoom: 18,
-            worldCopyJump: false,
-            maxBounds: [[-85, -180], [85, 180]],
-            maxBoundsViscosity: 0.8
-        });
-
-        L.tileLayer(
-            "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-            {
-                attribution: "&copy; OpenStreetMap contributors",
-                noWrap: true,
-                bounds: [[-85, -180], [85, 180]],
-                maxZoom: 19
-            }
-        ).addTo(map);
-
-        function markerColor(status) {
-            if (status === "visited") {
-                return "#793B56";
-            }
-
-            if (status === "wishlist") {
-                return "#B77D91";
-            }
-
-            return "#A7A66A";
-        }
-
-        worldPlaces.forEach(place => {
-            const color = markerColor(place.status);
-
-            const icon = L.divIcon({
-                className: "",
-                html: `
-                    <div class="map-marker"
-                         style="background:${color}"></div>
-                `,
-                iconSize: [17, 17],
-                iconAnchor: [8, 8]
-            });
-
-            const popup = `
-                <div class="popup-title">${place.name}</div>
-                <div class="popup-category">${place.category}</div>
-                <div class="popup-note">${place.note}</div>
-            `;
-
-            L.marker(place.coords, { icon: icon })
-                .addTo(map)
-                .bindPopup(popup);
-        });
-
-        // Start with a world view.
-        map.setView([25, 15], 2);
-    </script>
 </body>
 </html>
-
