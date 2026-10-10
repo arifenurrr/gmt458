@@ -1,0 +1,371 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A personal map of Arife Nur Çakır's favourite places in Türkiye.">
+    <title>My Favourite Places | Arife Nur Çakır</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+
+    <style>
+        .places-intro {
+            padding: 55px 0 30px;
+        }
+
+        #turkiye-map {
+            width: 100%;
+            height: 570px;
+            border: 1px solid #E8CFD3;
+            border-radius: 18px;
+            z-index: 1;
+        }
+
+        .map-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 18px;
+            margin: 20px 0;
+            color: var(--muted, #806C74);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .place-groups {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 20px;
+            margin-top: 35px;
+        }
+
+        .place-card {
+            background: var(--card, #FFFFFF);
+            border: 1px solid var(--border, #E8CFD3);
+            border-radius: 18px;
+            padding: 24px;
+        }
+
+        .place-card h3 {
+            margin-top: 0;
+        }
+
+        .place-card p {
+            line-height: 1.7;
+        }
+
+        .category {
+            display: inline-block;
+            font-size: 0.78rem;
+            letter-spacing: 2px;
+            font-weight: 700;
+            color: #B77D91;
+        }
+
+        @media (max-width: 700px) {
+            #turkiye-map {
+                height: 430px;
+            }
+
+            .place-groups {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>ANC.</h1>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="background.html">About Me</a>
+        <a href="projects.html">My Maps</a>
+    </nav>
+</header>
+
+<main>
+
+    <section class="hero places-intro">
+        <p class="tag">MY EVERYDAY WORLD</p>
+
+        <h2>The Places That Feel Like Me.</h2>
+
+        <p>
+            From the city where I study to the beaches where I unwind,
+            these are the places connected to my everyday life,
+            favourite memories and the people I love.
+        </p>
+    </section>
+
+    <section>
+        <h2>A Map of My Favourite Places</h2>
+
+        <p>
+            Explore my favourite places across Türkiye.
+            Select a marker to read why that place matters to me.
+        </p>
+
+        <div class="map-legend">
+            <div class="legend-item">
+                <span class="legend-dot" style="background:#793B56;"></span>
+                Everyday life
+            </div>
+
+            <div class="legend-item">
+                <span class="legend-dot" style="background:#B77D91;"></span>
+                Food &amp; social life
+            </div>
+
+            <div class="legend-item">
+                <span class="legend-dot" style="background:#A7A66A;"></span>
+                Nature &amp; escape
+            </div>
+        </div>
+
+        <div id="turkiye-map"></div>
+
+        <p style="color:var(--muted,#806C74);font-size:0.9rem;margin-top:14px;">
+            Map data © OpenStreetMap contributors.
+            Markers show approximate areas, not private addresses.
+        </p>
+    </section>
+
+    <section class="place-groups">
+
+        <article class="place-card">
+            <span class="category">01 / HOME</span>
+            <h3>Where Life Happens</h3>
+            <p>
+                <strong>Dalaman, Muğla</strong><br>
+                My family home and a place that will always feel familiar.
+            </p>
+            <p>
+                <strong>Ayrancı, Ankara</strong><br>
+                The neighbourhood where I live while studying in Ankara.
+            </p>
+        </article>
+
+        <article class="place-card">
+            <span class="category">02 / UNIVERSITY</span>
+            <h3>My Student Life</h3>
+            <p>
+                <strong>Hacettepe University, Ankara</strong><br>
+                Where I study Geomatics Engineering and spend an important
+                part of my everyday life.
+            </p>
+        </article>
+
+        <article class="place-card">
+            <span class="category">03 / FOOD & SOCIAL LIFE</span>
+            <h3>My Favourite Stops</h3>
+            <p>
+                <strong>Tunalı Hilmi Street, Ankara</strong><br>
+                A favourite area for going out and finding somewhere to eat.
+            </p>
+            <p>
+                <strong>IF Sokak, Ankara</strong><br>
+                One of my favourite food spots, especially for sushi.
+            </p>
+            <p>
+                <strong>Mustafa Kemal Aspava, Ankara</strong><br>
+                A place I associate with delicious food.
+            </p>
+        </article>
+
+        <article class="place-card">
+            <span class="category">04 / SPORT</span>
+            <h3>My Active Routine</h3>
+            <p>
+                <strong>Kentpark &amp; Cepa area, Ankara</strong><br>
+                The area where I go to the gym and fit exercise into my routine.
+            </p>
+        </article>
+
+        <article class="place-card">
+            <span class="category">05 / NATURE</span>
+            <h3>My Favourite Escapes</h3>
+            <p>
+                <strong>Kille Beach, Muğla</strong><br>
+                One of my favourite beaches.
+            </p>
+            <p>
+                <strong>Kayacık Beach, Muğla</strong><br>
+                A favourite place to enjoy the sea and coastline.
+            </p>
+            <p>
+                <strong>Akyaka Azmak River, Muğla</strong><br>
+                A special escape for its natural beauty and peaceful atmosphere.
+            </p>
+        </article>
+
+        <article class="place-card">
+            <span class="category">06 / PEOPLE</span>
+            <h3>Places Connected to People I Love</h3>
+            <p>
+                <strong>Bayraklı, İzmir</strong><br>
+                The area where one of my closest friends lives.
+            </p>
+            <p>
+                <strong>Den Haag, Netherlands</strong><br>
+                A city connected to someone special in my life.
+            </p>
+        </article>
+
+    </section>
+
+    <section>
+        <a href="world.html" class="button">
+            Explore My Travel Map ↗
+        </a>
+    </section>
+
+</main>
+
+<footer>
+    <p>Arife Nur Çakır · My Little Atlas</p>
+</footer>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+    const placesMap = L.map("turkiye-map", {
+        minZoom: 5,
+        maxZoom: 16,
+        maxBounds: [[34, 25], [43, 46]],
+        maxBoundsViscosity: 0.8
+    }).setView([39.2, 32.5], 6);
+
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: "&copy; OpenStreetMap contributors",
+        noWrap: true,
+        bounds: [[34, 25], [43, 46]]
+    }).addTo(placesMap);
+
+    const favouritePlaces = [
+        {
+            name: "Hacettepe University",
+            coords: [39.867, 32.734],
+            category: "Everyday life",
+            color: "#793B56",
+            note: "My university, where I study Geomatics Engineering."
+        },
+        {
+            name: "Ayrancı, Ankara",
+            coords: [39.895, 32.856],
+            category: "Home",
+            color: "#793B56",
+            note: "My neighbourhood and home while studying in Ankara."
+        },
+        {
+            name: "Kentpark & Cepa area",
+            coords: [39.907, 32.778],
+            category: "Sport",
+            color: "#793B56",
+            note: "The area where I go to the gym."
+        },
+        {
+            name: "Tunalı Hilmi Street",
+            coords: [39.901, 32.861],
+            category: "Food & social life",
+            color: "#B77D91",
+            note: "A favourite Ankara area for going out and eating."
+        },
+        {
+            name: "IF Sokak",
+            coords: [39.902, 32.861],
+            category: "Food & social life",
+            color: "#B77D91",
+            note: "A favourite food stop, especially for sushi."
+        },
+        {
+            name: "Mustafa Kemal Aspava",
+            coords: [39.909, 32.807],
+            category: "Food & social life",
+            color: "#B77D91",
+            note: "A favourite spot for delicious food."
+        },
+        {
+            name: "Dalaman, Muğla",
+            coords: [36.765, 28.802],
+            category: "Home",
+            color: "#793B56",
+            note: "The area where my family home is located."
+        },
+        {
+            name: "Kille Beach",
+            coords: [36.84, 28.73],
+            category: "Nature & escape",
+            color: "#A7A66A",
+            note: "One of my favourite beaches."
+        },
+        {
+            name: "Kayacık Beach",
+            coords: [36.70, 28.71],
+            category: "Nature & escape",
+            color: "#A7A66A",
+            note: "A favourite place to enjoy the coastline."
+        },
+        {
+            name: "Akyaka Azmak River",
+            coords: [37.052, 28.326],
+            category: "Nature & escape",
+            color: "#A7A66A",
+            note: "A beautiful and peaceful place in Akyaka."
+        },
+        {
+            name: "Bayraklı, İzmir",
+            coords: [38.462, 27.166],
+            category: "People",
+            color: "#793B56",
+            note: "The area where one of my closest friends lives."
+        },
+        {
+            name: "Den Haag, Netherlands",
+            coords: [52.0705, 4.3007],
+            category: "People",
+            color: "#793B56",
+            note: "A city connected to someone special in my life."
+        }
+    ];
+
+    favouritePlaces.forEach(function(place) {
+        const marker = L.circleMarker(place.coords, {
+            radius: 8,
+            color: "#FFFFFF",
+            weight: 2,
+            fillColor: place.color,
+            fillOpacity: 1
+        }).addTo(placesMap);
+
+        marker.bindPopup(
+            "<strong style='color:#793B56;font-size:16px'>" +
+            place.name +
+            "</strong><br>" +
+            "<span style='color:#B77D91;font-size:12px'>" +
+            place.category +
+            "</span><br><br>" +
+            place.note
+        );
+
+        marker.bindTooltip(place.name, {
+            direction: "top",
+            offset: [0, -8]
+        });
+    });
+</script>
+
+</body>
+</html>
