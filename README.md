@@ -1,4 +1,4 @@
-# GMT458 – Personal Web Mapping Portfolio
+# GMT458 – Personal Web Mapping 
 
 ## Project Overview
 
