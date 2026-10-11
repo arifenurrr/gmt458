@@ -6,7 +6,7 @@ This project is a personal web mapping portfolio developed for the GMT458 Web GI
 
 The website can be accessed through the following link:
 
-[https://arifenurrr.github.io/gmt458/index.html](https://arifenurrr.github.io/gmt458/index.html)
+[https://arifenurrr.github.io/gmt458/](https://arifenurrr.github.io/gmt458/)
 
 ## Website Pages
 
