@@ -1,4 +1,4 @@
-
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -77,6 +77,52 @@
             line-height: 1.7;
         }
 
+        /* GIS Toolkit table */
+
+        .skills-section {
+            max-width: 1200px;
+            margin: 48px auto;
+            padding: 36px;
+            background: #FFFFFF;
+            border: 1px solid #E8CFD3;
+            border-radius: 26px;
+        }
+
+        .skills-section h2 {
+            color: #793B56;
+            margin-top: 0;
+        }
+
+        .skills-intro {
+            color: #806C74;
+            margin-bottom: 24px;
+        }
+
+        .skills-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #FFFFFF;
+        }
+
+        .skills-table th,
+        .skills-table td {
+            padding: 16px;
+            border: 1px solid #E8DADD;
+            text-align: left;
+        }
+
+        .skills-table th {
+            background: #793B56;
+            color: #FFFFFF;
+        }
+
+        .skills-table td img {
+            display: block;
+            width: 48px;
+            height: 48px;
+            object-fit: contain;
+        }
+
         @media (max-width: 800px) {
             .about-section {
                 margin: 24px 16px;
@@ -91,6 +137,28 @@
             .about-photo {
                 height: 420px;
                 max-width: 100%;
+            }
+
+            .skills-section {
+                margin: 24px 16px;
+                padding: 24px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .skills-section {
+                padding: 18px;
+            }
+
+            .skills-table th,
+            .skills-table td {
+                padding: 9px;
+                font-size: 0.85rem;
+            }
+
+            .skills-table td img {
+                width: 36px;
+                height: 36px;
             }
         }
 
@@ -111,14 +179,12 @@
     <header>
         <h1>ANC.</h1>
 
-        
-<nav>
-    <a href="index.html">Home</a>
-    <a href="background.html" class="active">About Me</a>
-    <a href="world.html">My World</a>
-    <a href="places.html">My Places</a>
-</nav>
-
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="background.html" class="active">About Me</a>
+            <a href="world.html">My World</a>
+            <a href="places.html">My Places</a>
+        </nav>
     </header>
 
     <main>
@@ -154,11 +220,74 @@
                         visited, the places that are special to me,
                         and the destinations I hope to explore.
                     </p>
-
-                    
                 </div>
-
             </div>
+        </section>
+
+        <!-- New GIS Toolkit table -->
+        <section class="skills-section">
+            <h2>My GIS Toolkit</h2>
+
+            <p class="skills-intro">
+                Some of the tools I use for mapping, spatial analysis,
+                and web development.
+            </p>
+
+            <table class="skills-table">
+                <thead>
+                    <tr>
+                        <th>Tool</th>
+                        <th>Logo</th>
+                        <th>What I Use It For</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td>QGIS</td>
+                        <td>
+                            <img
+                                src="https://upload.wikimedia.org/wikipedia/commons/9/91/QGIS_logo_new.svg"
+                                alt="QGIS logo"
+                            >
+                        </td>
+                        <td>Spatial analysis and map creation</td>
+                    </tr>
+
+                    <tr>
+                        <td>Python</td>
+                        <td>
+                            <img
+                                src="https://upload.wikimedia.org/wikipedia/commons/c/c3/Python-logo-notext.svg"
+                                alt="Python logo"
+                            >
+                        </td>
+                        <td>Image processing and automation</td>
+                    </tr>
+
+                    <tr>
+                        <td>PostGIS</td>
+                        <td>
+                            <img
+                                src="https://upload.wikimedia.org/wikipedia/commons/2/29/PostGIS_logo.png"
+                                alt="PostGIS logo"
+                            >
+                        </td>
+                        <td>Spatial database management</td>
+                    </tr>
+
+                    <tr>
+                        <td>Leaflet</td>
+                        <td>
+                            <img
+                                src="https://upload.wikimedia.org/wikipedia/commons/1/1a/Leaflet_logo.png"
+                                alt="Leaflet logo"
+                            >
+                        </td>
+                        <td>Interactive web mapping</td>
+                    </tr>
+                </tbody>
+            </table>
         </section>
     </main>
 
