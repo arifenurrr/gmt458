@@ -9,6 +9,10 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet"
           href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <link rel="stylesheet"
+          href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css">
+    <link rel="stylesheet"
+          href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css">
 
     <style>
         .world-map-section {
@@ -71,6 +75,23 @@
             margin-top: 14px;
         }
 
+        .world-popup {
+            width: 250px;
+            max-width: 65vw;
+            color: #35252E;
+            line-height: 1.5;
+        }
+
+        .world-popup img {
+            display: block;
+            width: 100%;
+            height: 145px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            background: #FAF4F1;
+        }
+
         .world-popup strong {
             color: #793B56;
             font-size: 16px;
@@ -82,6 +103,33 @@
             color: #B77D91;
             font-size: 12px;
             font-weight: 600;
+        }
+
+        .world-popup .popup-story {
+            font-size: 13px;
+        }
+
+        .custom-cluster {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 42px;
+            height: 42px;
+            border: 3px solid #ffffff;
+            border-radius: 50%;
+            background: #793B56;
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 700;
+            box-shadow: 0 2px 10px #35252e40;
+        }
+
+        .custom-cluster.medium {
+            background: #B77D91;
+        }
+
+        .custom-cluster.large {
+            background: #A7A66A;
         }
 
         @media (max-width: 700px) {
@@ -101,6 +149,14 @@
             .legend-item {
                 font-size: 0.85rem;
                 padding: 9px 12px;
+            }
+
+            .world-popup {
+                width: 220px;
+            }
+
+            .world-popup img {
+                height: 125px;
             }
         }
     </style>
@@ -149,8 +205,8 @@
         </div>
 
         <p class="map-note">
-            Zoom out to explore the world, or zoom in and select a marker
-            to read the story behind each place.
+            Zoom out to explore the world. Nearby places are grouped together.
+            Zoom in or select a cluster to discover individual destinations.
         </p>
     </section>
 </main>
@@ -160,14 +216,21 @@
 </footer>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
     const mapElement = document.getElementById("world-map");
 
-    if (!mapElement || typeof L === "undefined") {
-        mapElement.innerHTML =
-            "The map could not be loaded. Please refresh the page.";
+    if (
+        !mapElement ||
+        typeof L === "undefined" ||
+        typeof L.markerClusterGroup !== "function"
+    ) {
+        if (mapElement) {
+            mapElement.innerHTML =
+                "The map could not be loaded. Please refresh the page.";
+        }
         return;
     }
 
@@ -192,55 +255,64 @@ document.addEventListener("DOMContentLoaded", function () {
             name: "Amsterdam",
             coords: [52.3676, 4.9041],
             category: "visited",
-            story: "One of the Dutch cities I've explored."
+            story: "One of the Dutch cities I've explored.",
+            image: "images/amsterdam.jpeg"
         },
         {
             name: "Rotterdam",
             coords: [51.9244, 4.4777],
             category: "visited",
-            story: "A city I visited in the Netherlands, known for its modern architecture."
+            story: "A city I visited in the Netherlands, known for its modern architecture.",
+            image: "images/rotterdam.jpeg"
         },
         {
             name: "Leiden",
             coords: [52.1601, 4.4970],
             category: "visited",
-            story: "One of the Dutch cities I've had the chance to discover."
+            story: "One of the Dutch cities I've had the chance to discover.",
+            image: "images/leiden.jpeg"
         },
         {
             name: "Den Haag",
             coords: [52.0705, 4.3007],
             category: "special",
-            story: "My home in the Netherlands, where my boyfriend lives."
+            story: "My home in the Netherlands, where my boyfriend lives.",
+            image: "images/denhagg.jpeg"
         },
         {
             name: "Utrecht",
             coords: [52.0907, 5.1214],
             category: "visited",
-            story: "A Dutch city I've visited and enjoyed exploring."
+            story: "A Dutch city I've visited and enjoyed exploring.",
+            image: "images/utrecht.jpg"
         },
         {
             name: "Milan",
             coords: [45.4642, 9.1900],
             category: "visited",
-            story: "One of the Italian cities I've visited."
+            story: "One of the Italian cities I've visited.",
+            image: "images/milano.jpeg"
         },
         {
             name: "Florence",
             coords: [43.7696, 11.2558],
             category: "visited",
-            story: "A memorable Italian city with beautiful art and architecture."
+            story: "A memorable Italian city with beautiful art and architecture.",
+            image: "images/floransa.jpeg"
         },
         {
             name: "Ghent",
             coords: [51.0543, 3.7174],
             category: "visited",
-            story: "A Belgian city I've explored."
+            story: "A Belgian city I've explored.",
+            image: "images/gent.jpeg"
         },
         {
             name: "Bruges",
             coords: [51.2093, 3.2247],
             category: "visited",
-            story: "A Belgian city with charming historic streets."
+            story: "A Belgian city with charming historic streets.",
+            image: "images/brugge.jpeg"
         },
 
         // Places on my wishlist
@@ -248,43 +320,50 @@ document.addEventListener("DOMContentLoaded", function () {
             name: "Tokyo",
             coords: [35.6762, 139.6503],
             category: "wishlist",
-            story: "A city I dream of discovering, from its culture to its lively streets."
+            story: "A city I dream of discovering, from its culture to its lively streets.",
+            image: "images/tokyo.jpg"
         },
         {
             name: "Barcelona",
             coords: [41.3874, 2.1686],
             category: "wishlist",
-            story: "I would love to explore Barcelona's architecture and atmosphere."
+            story: "I would love to explore Barcelona's architecture and atmosphere.",
+            image: "images/barcelona.jpg"
         },
         {
             name: "Madrid",
             coords: [40.4168, -3.7038],
             category: "wishlist",
-            story: "One of the Spanish cities on my travel wishlist."
+            story: "One of the Spanish cities on my travel wishlist.",
+            image: "images/madrid.jpg"
         },
         {
             name: "Thailand",
             coords: [13.7563, 100.5018],
             category: "wishlist",
-            story: "A destination I dream of visiting for its landscapes and culture."
+            story: "A destination I dream of visiting for its landscapes and culture.",
+            image: "images/tayland.jpg"
         },
         {
             name: "Rome",
             coords: [41.9028, 12.4964],
             category: "wishlist",
-            story: "I'd love to explore its history, streets and architecture."
+            story: "I'd love to explore its history, streets and architecture.",
+            image: "images/roma.jpg"
         },
         {
             name: "Paris",
             coords: [48.8566, 2.3522],
             category: "wishlist",
-            story: "A city I'd love to experience through its streets, museums and cafés."
+            story: "A city I'd love to experience through its streets, museums and cafés.",
+            image: "images/paris.jpg"
         },
         {
             name: "Berlin",
             coords: [52.5200, 13.4050],
             category: "wishlist",
-            story: "A city on my list to discover in the future."
+            story: "A city on my list to discover in the future.",
+            image: "images/berlin.jpg"
         }
     ];
 
@@ -294,31 +373,73 @@ document.addEventListener("DOMContentLoaded", function () {
         special: "#A7A66A"
     };
 
-    places.forEach(function (place) {
-        const categoryLabel = {
-            visited: "Places I've visited",
-            wishlist: "Places I dream of visiting",
-            special: "A city close to my heart"
-        }[place.category];
+    const categoryLabels = {
+        visited: "Places I've visited",
+        wishlist: "Places I dream of visiting",
+        special: "A city close to my heart"
+    };
 
-        L.circleMarker(place.coords, {
+    const clusters = L.markerClusterGroup({
+        maxClusterRadius: 45,
+        showCoverageOnHover: false,
+        spiderfyOnMaxZoom: true,
+        zoomToBoundsOnClick: true,
+        animate: true,
+
+        iconCreateFunction: function (cluster) {
+            const count = cluster.getChildCount();
+
+            let sizeClass = "";
+            if (count >= 10) {
+                sizeClass = "large";
+            } else if (count >= 5) {
+                sizeClass = "medium";
+            }
+
+            return L.divIcon({
+                html:
+                    '<div class="custom-cluster ' + sizeClass + '">' +
+                    count +
+                    '</div>',
+                className: "",
+                iconSize: [42, 42],
+                iconAnchor: [21, 21]
+            });
+        }
+    });
+
+    places.forEach(function (place) {
+        const marker = L.circleMarker(place.coords, {
             radius: 7,
             color: "#ffffff",
             weight: 2,
             fillColor: colors[place.category],
             fillOpacity: 1
-        })
-        .addTo(map)
-        .bindPopup(
+        });
+
+        const popupContent =
             '<div class="world-popup">' +
+                '<img src="' + place.image + '" ' +
+                'alt="' + place.name + '" ' +
+                'onerror="this.style.display=\'none\'">' +
                 '<strong>' + place.name + '</strong><br>' +
-                '<span class="popup-category">' + categoryLabel + '</span><br>' +
-                '<span>' + place.story + '</span>' +
-            '</div>'
-        );
+                '<span class="popup-category">' +
+                    categoryLabels[place.category] +
+                '</span><br>' +
+                '<span class="popup-story">' +
+                    place.story +
+                '</span>' +
+            '</div>';
+
+        marker.bindPopup(popupContent, {
+            maxWidth: 290
+        });
+
+        clusters.addLayer(marker);
     });
 
-    // Keep the map correctly sized after the page is rendered.
+    map.addLayer(clusters);
+
     setTimeout(function () {
         map.invalidateSize();
     }, 300);
