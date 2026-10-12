@@ -346,17 +346,14 @@
             }
         ];
 
-        // Prevent the world map from repeating horizontally.
+        // Create the OpenLayers map without repeating the world horizontally.
         const map = new ol.Map({
             target: "places-map",
             layers: [
                 new ol.layer.Tile({
                     source: new ol.source.OSM({
                         wrapX: false
-                    }),
-                    sourceAttributions: [
-                        '© <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap contributors</a>'
-                    ]
+                    })
                 })
             ],
             view: new ol.View({
@@ -378,44 +375,79 @@
             })
         });
 
-        // Convert each place into an OpenLayers feature.
+        // Convert every place into an OpenLayers feature.
         const features = places.map(place => {
-            const feature = new ol.Feature({
+            return new ol.Feature({
                 geometry: new ol.geom.Point(
-                    ol.proj.fromLonLat([place.coords[1], place.coords[0]])
+                    ol.proj.fromLonLat([
+                        place.coords[1],
+                        place.coords[0]
+                    ])
                 ),
                 place: place
             });
-
-            feature.setStyle(new ol.style.Style({
-                image: new ol.style.Circle({
-                    radius: 7,
-                    fill: new ol.style.Fill({
-                        color: place.color
-                    }),
-                    stroke: new ol.style.Stroke({
-                        color: "#ffffff",
-                        width: 3
-                    })
-                })
-            }));
-
-            return feature;
         });
 
         const markerSource = new ol.source.Vector({
             features: features
         });
 
+        // Combine nearby places into numbered clusters.
+        const clusterSource = new ol.source.Cluster({
+            distance: 40,
+            minDistance: 20,
+            source: markerSource
+        });
+
+        // Style individual markers and clusters.
         const markerLayer = new ol.layer.Vector({
-            source: markerSource,
-            // Markers appear after zooming in to avoid overlap.
-            minZoom: 7
+            source: clusterSource,
+            style: function (feature) {
+                const members = feature.get("features");
+                const count = members.length;
+
+                if (count === 1) {
+                    const place = members[0].get("place");
+
+                    return new ol.style.Style({
+                        image: new ol.style.Circle({
+                            radius: 7,
+                            fill: new ol.style.Fill({
+                                color: place.color
+                            }),
+                            stroke: new ol.style.Stroke({
+                                color: "#ffffff",
+                                width: 3
+                            })
+                        })
+                    });
+                }
+
+                return new ol.style.Style({
+                    image: new ol.style.Circle({
+                        radius: Math.min(19 + count, 25),
+                        fill: new ol.style.Fill({
+                            color: "#87529B"
+                        }),
+                        stroke: new ol.style.Stroke({
+                            color: "#ffffff",
+                            width: 3
+                        })
+                    }),
+                    text: new ol.style.Text({
+                        text: String(count),
+                        font: "bold 14px sans-serif",
+                        fill: new ol.style.Fill({
+                            color: "#ffffff"
+                        })
+                    })
+                });
+            }
         });
 
         map.addLayer(markerLayer);
 
-        // Popup overlay.
+        // Popup overlay for individual places.
         const popupElement = document.createElement("div");
         popupElement.className = "place-popup";
         popupElement.style.display = "none";
@@ -439,6 +471,7 @@
             popupElement.style.display = "none";
         }
 
+        // Zoom into a cluster, or show the selected place's details.
         map.on("singleclick", function (event) {
             const feature = map.forEachFeatureAtPixel(
                 event.pixel,
@@ -458,7 +491,34 @@
                 return;
             }
 
-            const place = feature.get("place");
+            const members = feature.get("features");
+
+            // Clicking a cluster zooms toward its member locations.
+            if (members.length > 1) {
+                closePopup();
+
+                const clusterExtent = ol.extent.createEmpty();
+
+                members.forEach(function (member) {
+                    ol.extent.extend(
+                        clusterExtent,
+                        member.getGeometry().getExtent()
+                    );
+                });
+
+                const currentZoom = map.getView().getZoom();
+
+                map.getView().fit(clusterExtent, {
+                    duration: 350,
+                    padding: [70, 70, 70, 70],
+                    maxZoom: Math.min(currentZoom + 3, 17)
+                });
+
+                return;
+            }
+
+            // Clicking an individual marker opens its popup.
+            const place = members[0].get("place");
 
             popupElement.innerHTML = `
                 <button class="popup-close" aria-label="Close popup">&times;</button>
@@ -476,7 +536,7 @@
             );
         });
 
-        // Change cursor when hovering over a marker.
+        // Show a pointer cursor when hovering over a marker or cluster.
         map.on("pointermove", function (event) {
             if (event.dragging) return;
 
@@ -489,19 +549,10 @@
             map.getTargetElement().style.cursor = hit ? "pointer" : "";
         });
 
-        // Show markers only when the zoom level is sufficient.
-        function updateMarkers() {
-            markerLayer.setVisible(map.getView().getZoom() >= 7);
-            closePopup();
-        }
+        // Fit the initial map around all locations.
+        const placeExtent = markerSource.getExtent();
 
-        map.getView().on("change:resolution", updateMarkers);
-        updateMarkers();
-
-        // Fit the initial map around all places.
-        const extent = markerSource.getExtent();
-
-        map.getView().fit(extent, {
+        map.getView().fit(placeExtent, {
             padding: [35, 35, 35, 35],
             maxZoom: 6,
             duration: 0
@@ -514,5 +565,3 @@
     </script>
 </body>
 </html>
-
-
