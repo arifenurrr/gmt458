@@ -107,14 +107,6 @@
             display: inline-block;
         }
 
-        .place-marker {
-            width: 17px;
-            height: 17px;
-            border: 3px solid white;
-            border-radius: 50%;
-            box-shadow: 0 2px 9px #35252e55;
-        }
-
         .popup-category {
             color: var(--rose);
             font-size: 0.78rem;
@@ -125,14 +117,17 @@
 
         .popup-title {
             color: var(--wine);
-            font-size: 1.05rem;
+            font-size: 1.15rem;
             font-weight: 700;
-            margin-bottom: 7px;
+            margin: 0 28px 7px 0;
+            line-height: 1.35;
         }
 
         .popup-note {
             color: var(--dark);
             font-size: 0.92rem;
+            line-height: 1.6;
+            margin-top: 10px;
         }
 
         .map-note {
@@ -141,17 +136,34 @@
             margin-top: 14px;
         }
 
+        /* Wider popup with a photo */
         .place-popup {
             position: absolute;
-            min-width: 190px;
-            max-width: 260px;
+            width: 340px;
+            max-width: min(340px, 75vw);
+            box-sizing: border-box;
             background: white;
-            border-radius: 15px;
-            padding: 16px 18px;
-            box-shadow: 0 6px 24px #35252e25;
+            border-radius: 16px;
+            padding: 14px;
+            box-shadow: 0 6px 24px #35252e30;
             border: 1px solid var(--rose-light);
             bottom: 12px;
             left: -20px;
+            z-index: 1000;
+        }
+
+        .popup-image {
+            display: block;
+            width: 100%;
+            height: 210px;
+            object-fit: contain;
+            background: var(--rose-bg);
+            border-radius: 10px;
+            margin: 0 0 13px;
+        }
+
+        .popup-image[hidden] {
+            display: none;
         }
 
         .place-popup:after {
@@ -169,13 +181,22 @@
 
         .popup-close {
             position: absolute;
-            top: 7px;
-            right: 9px;
-            border: none;
-            background: transparent;
-            color: #806b76;
-            font-size: 20px;
+            top: 17px;
+            right: 18px;
+            z-index: 2;
+            width: 30px;
+            height: 30px;
+            border: 1px solid var(--rose-light);
+            border-radius: 50%;
+            background: white;
+            color: var(--wine);
+            font-size: 21px;
+            line-height: 1;
             cursor: pointer;
+        }
+
+        .popup-close:hover {
+            background: var(--rose-bg);
         }
 
         .ol-zoom button {
@@ -207,8 +228,17 @@
             }
 
             .place-popup {
-                min-width: 160px;
-                max-width: 210px;
+                width: 280px;
+                max-width: 75vw;
+                padding: 11px;
+            }
+
+            .popup-image {
+                height: 170px;
+            }
+
+            .popup-title {
+                font-size: 1rem;
             }
         }
     </style>
@@ -279,6 +309,7 @@
                 coords: [39.867, 32.734],
                 category: "University & student life",
                 color: "#793B56",
+                image: "images/hacettepe.jpeg",
                 note: "The place where I study Geomatics Engineering and work towards my future."
             },
             {
@@ -286,6 +317,7 @@
                 coords: [39.895, 32.856],
                 category: "Home & everyday life",
                 color: "#793B56",
+                image: "images/ayrancev.jpeg",
                 note: "My home in Ankara, where I return after classes and spend my everyday life."
             },
             {
@@ -293,6 +325,7 @@
                 coords: [39.9088, 32.7775],
                 category: "Sport & routine",
                 color: "#793B56",
+                image: "images/spor.jpeg",
                 note: "My go-to place for workouts, staying active and making time for myself."
             },
             {
@@ -300,6 +333,7 @@
                 coords: [39.9087, 32.8595],
                 category: "Food & favourite spots",
                 color: "#B77D91",
+                image: "images/sushi.jpeg",
                 note: "My favourite sushi spot around Tunalı — a place I love returning to for good sushi."
             },
             {
@@ -307,6 +341,7 @@
                 coords: [39.909, 32.797],
                 category: "Food & favourite spots",
                 color: "#B77D91",
+                image: "images/aspava.jpeg",
                 note: "One of my favourite places in Ankara for a delicious, satisfying meal."
             },
             {
@@ -314,6 +349,7 @@
                 coords: [36.773, 28.802],
                 category: "Family & home",
                 color: "#793B56",
+                image: "images/aileev.jpeg",
                 note: "My family's home in Dalaman, Muğla. No matter where I go, this place will always feel like home."
             },
             {
@@ -321,6 +357,7 @@
                 coords: [36.70078493467352, 28.877583913493552],
                 category: "My favourite beach",
                 color: "#A7A66A",
+                image: "images/kille.jpeg",
                 note: "One of my favourite beaches near Dalaman — perfect for enjoying the sea, sunshine and peaceful summer days."
             },
             {
@@ -328,6 +365,7 @@
                 coords: [36.6871402079095, 28.78649026918957],
                 category: "My favourite seaside escape",
                 color: "#A7A66A",
+                image: "images/kayacik.jpeg",
                 note: "My favourite place to sit by the sea, listen to the waves and slow down for a while."
             },
             {
@@ -335,6 +373,7 @@
                 coords: [37.052, 28.326],
                 category: "Nature & peaceful moments",
                 color: "#A7A66A",
+                image: "images/azmak.jpeg",
                 note: "One of my favourite places in Akyaka for its beautiful river, fresh air and relaxing atmosphere."
             },
             {
@@ -342,6 +381,7 @@
                 coords: [38.462, 27.166],
                 category: "Friendship",
                 color: "#793B56",
+                image: "images/izmir.jpeg",
                 note: "The part of İzmir where one of my closest friends lives. This place is special because of the memories and friendship connected to it."
             }
         ];
@@ -517,15 +557,23 @@
                 return;
             }
 
-            // Clicking an individual marker opens its popup.
+            // Clicking an individual marker opens its photo popup.
             const place = members[0].get("place");
 
             popupElement.innerHTML = `
                 <button class="popup-close" aria-label="Close popup">&times;</button>
+                <img class="popup-image" src="${place.image}" alt="${place.name}">
                 <div class="popup-title">${place.name}</div>
                 <div class="popup-category">${place.category}</div>
                 <div class="popup-note">${place.note}</div>
             `;
+
+            const popupImage = popupElement.querySelector(".popup-image");
+
+            // Hide only the image if the file cannot be loaded.
+            popupImage.addEventListener("error", function () {
+                this.hidden = true;
+            });
 
             popupElement.style.display = "block";
             popupOverlay.setPosition(event.coordinate);
