@@ -7,7 +7,7 @@
     <title>My Favourite Places | Arife Nur Çakır</title>
 
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol@10.6.1/ol.css">
 
     <style>
         :root {
@@ -115,17 +115,6 @@
             box-shadow: 0 2px 9px #35252e55;
         }
 
-        .leaflet-popup-content-wrapper {
-            border-radius: 15px;
-            box-shadow: 0 6px 24px #35252e25;
-        }
-
-        .leaflet-popup-content {
-            margin: 16px 18px;
-            min-width: 190px;
-            line-height: 1.5;
-        }
-
         .popup-category {
             color: var(--rose);
             font-size: 0.78rem;
@@ -152,6 +141,56 @@
             margin-top: 14px;
         }
 
+        .place-popup {
+            position: absolute;
+            min-width: 190px;
+            max-width: 260px;
+            background: white;
+            border-radius: 15px;
+            padding: 16px 18px;
+            box-shadow: 0 6px 24px #35252e25;
+            border: 1px solid var(--rose-light);
+            bottom: 12px;
+            left: -20px;
+        }
+
+        .place-popup:after {
+            content: "";
+            position: absolute;
+            bottom: -9px;
+            left: 18px;
+            width: 16px;
+            height: 16px;
+            background: white;
+            border-right: 1px solid var(--rose-light);
+            border-bottom: 1px solid var(--rose-light);
+            transform: rotate(45deg);
+        }
+
+        .popup-close {
+            position: absolute;
+            top: 7px;
+            right: 9px;
+            border: none;
+            background: transparent;
+            color: #806b76;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .ol-zoom button {
+            background: white;
+            color: var(--wine);
+        }
+
+        .ol-zoom button:hover {
+            background: var(--rose-bg);
+        }
+
+        .ol-attribution {
+            font-size: 11px;
+        }
+
         @media (max-width: 650px) {
             .places-page {
                 width: 94%;
@@ -165,6 +204,11 @@
 
             #places-map {
                 height: 480px;
+            }
+
+            .place-popup {
+                min-width: 160px;
+                max-width: 210px;
             }
         }
     </style>
@@ -226,7 +270,8 @@
         <p>Made with love by Arife Nur Çakır</p>
     </footer>
 
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ol@10.6.1/dist/ol.js"></script>
+
     <script>
         const places = [
             {
@@ -301,43 +346,173 @@
             }
         ];
 
-        const map = L.map("places-map", {
-            minZoom: 2,
-            maxZoom: 18,
-            worldCopyJump: false,
-            maxBounds: [[-85, -180], [85, 180]],
-            maxBoundsViscosity: 0.8
+        // Prevent the world map from repeating horizontally.
+        const map = new ol.Map({
+            target: "places-map",
+            layers: [
+                new ol.layer.Tile({
+                    source: new ol.source.OSM({
+                        wrapX: false
+                    }),
+                    sourceAttributions: [
+                        '© <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap contributors</a>'
+                    ]
+                })
+            ],
+            view: new ol.View({
+                center: ol.proj.fromLonLat([32.8, 39.1]),
+                zoom: 5,
+                minZoom: 2,
+                maxZoom: 18,
+                extent: ol.proj.transformExtent(
+                    [-180, -85, 180, 85],
+                    "EPSG:4326",
+                    "EPSG:3857"
+                ),
+                multiWorld: false
+            }),
+            controls: ol.control.defaults.defaults({
+                attribution: true,
+                zoom: true,
+                rotate: false
+            })
         });
 
-        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-            attribution: "&copy; OpenStreetMap contributors",
-            noWrap: true,
-            bounds: [[-85, -180], [85, 180]],
-            maxZoom: 19
-        }).addTo(map);
-
-        places.forEach(place => {
-            const markerIcon = L.divIcon({
-                className: "",
-                html: `<div class="place-marker" style="background:${place.color}"></div>`,
-                iconSize: [17, 17],
-                iconAnchor: [8, 8]
+        // Convert each place into an OpenLayers feature.
+        const features = places.map(place => {
+            const feature = new ol.Feature({
+                geometry: new ol.geom.Point(
+                    ol.proj.fromLonLat([place.coords[1], place.coords[0]])
+                ),
+                place: place
             });
 
-            const popup = `
+            feature.setStyle(new ol.style.Style({
+                image: new ol.style.Circle({
+                    radius: 7,
+                    fill: new ol.style.Fill({
+                        color: place.color
+                    }),
+                    stroke: new ol.style.Stroke({
+                        color: "#ffffff",
+                        width: 3
+                    })
+                })
+            }));
+
+            return feature;
+        });
+
+        const markerSource = new ol.source.Vector({
+            features: features
+        });
+
+        const markerLayer = new ol.layer.Vector({
+            source: markerSource,
+            // Markers appear after zooming in to avoid overlap.
+            minZoom: 7
+        });
+
+        map.addLayer(markerLayer);
+
+        // Popup overlay.
+        const popupElement = document.createElement("div");
+        popupElement.className = "place-popup";
+        popupElement.style.display = "none";
+
+        const popupOverlay = new ol.Overlay({
+            element: popupElement,
+            positioning: "bottom-left",
+            offset: [8, -12],
+            stopEvent: true,
+            autoPan: {
+                animation: {
+                    duration: 200
+                }
+            }
+        });
+
+        map.addOverlay(popupOverlay);
+
+        function closePopup() {
+            popupOverlay.setPosition(undefined);
+            popupElement.style.display = "none";
+        }
+
+        map.on("singleclick", function (event) {
+            const feature = map.forEachFeatureAtPixel(
+                event.pixel,
+                function (feature) {
+                    return feature;
+                },
+                {
+                    layerFilter: function (layer) {
+                        return layer === markerLayer;
+                    },
+                    hitTolerance: 6
+                }
+            );
+
+            if (!feature) {
+                closePopup();
+                return;
+            }
+
+            const place = feature.get("place");
+
+            popupElement.innerHTML = `
+                <button class="popup-close" aria-label="Close popup">&times;</button>
                 <div class="popup-title">${place.name}</div>
                 <div class="popup-category">${place.category}</div>
                 <div class="popup-note">${place.note}</div>
             `;
 
-            L.marker(place.coords, { icon: markerIcon })
-                .addTo(map)
-                .bindPopup(popup);
+            popupElement.style.display = "block";
+            popupOverlay.setPosition(event.coordinate);
+
+            popupElement.querySelector(".popup-close").addEventListener(
+                "click",
+                closePopup
+            );
         });
 
-        const placeBounds = L.latLngBounds(places.map(place => place.coords));
-        map.fitBounds(placeBounds.pad(0.12), { maxZoom: 7 });
+        // Change cursor when hovering over a marker.
+        map.on("pointermove", function (event) {
+            if (event.dragging) return;
+
+            const hit = map.hasFeatureAtPixel(event.pixel, {
+                layerFilter: function (layer) {
+                    return layer === markerLayer;
+                }
+            });
+
+            map.getTargetElement().style.cursor = hit ? "pointer" : "";
+        });
+
+        // Show markers only when the zoom level is sufficient.
+        function updateMarkers() {
+            markerLayer.setVisible(map.getView().getZoom() >= 7);
+            closePopup();
+        }
+
+        map.getView().on("change:resolution", updateMarkers);
+        updateMarkers();
+
+        // Fit the initial map around all places.
+        const extent = markerSource.getExtent();
+
+        map.getView().fit(extent, {
+            padding: [35, 35, 35, 35],
+            maxZoom: 6,
+            duration: 0
+        });
+
+        // Ensure the map fills its container after loading.
+        setTimeout(function () {
+            map.updateSize();
+        }, 100);
     </script>
 </body>
 </html>
+
 
